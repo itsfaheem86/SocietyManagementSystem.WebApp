@@ -2,19 +2,22 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-const arrearSchema = new Schema({
+const logSchema = new Schema({
   amount: {
     type: Number,
-    required: true
+    required: true,
+  },
+  category: {
+    type: String,
+    required: true,
   },
   description: {
     type: String,
-    required: true
   },
   date: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
-module.exports = mongoose.module("Log", arrearSchema);
+module.exports = mongoose.model("Log", logSchema);
