@@ -81,6 +81,7 @@ export class EditSocietyProfileComponent implements OnInit {
 
   ngOnDestroy() {
     this.societyStatusSub.unsubscribe();
+    this.societySub.unsubscribe();
   }
 
   onSignUp() {
