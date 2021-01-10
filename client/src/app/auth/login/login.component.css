@@ -145,6 +145,22 @@
   justify-content: center;
 }
 
+.extra {
+  display: flex;
+  flex-direction: column;
+}
+
+.extra a {
+  text-decoration: none;
+  margin-bottom: 4px;
+  color: rgb(85, 26, 139);
+}
+
+.extra a:hover {
+  cursor: pointer;
+  color: rgb(148, 43, 246);
+}
+
 @media (max-width: 350px) {
   #login .wrapper .form {
     padding: 10px;
