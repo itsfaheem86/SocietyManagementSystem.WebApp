@@ -1,8 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { Subscription } from "rxjs";
+import { PasswordResetSnackComponent } from "src/app/common/snackbars/password-reset.component";
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -18,11 +20,13 @@ export class EnterEmailDialogComponent implements OnInit {
   signUpLink = "/auth/signup-member";
 
   private authStatusSub: Subscription;
+  private authPasswordResetStatusSub: Subscription;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private matDialog: MatDialogRef<EnterEmailDialogComponent>
+    private matDialog: MatDialogRef<EnterEmailDialogComponent>,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -33,6 +37,15 @@ export class EnterEmailDialogComponent implements OnInit {
       .getAuthStatusListener()
       .subscribe((emittedBoolean) => {
         this.isLoading = false;
+      });
+
+    this.authPasswordResetStatusSub = this.authService
+      .getresetPasswordStatusListenner()
+      .subscribe((emittedBoolean) => {
+        this.matDialog.close();
+        this.snackBar.openFromComponent(PasswordResetSnackComponent, {
+          duration: 10000,
+        });
       });
 
     this.form = new FormGroup({
@@ -47,6 +60,7 @@ export class EnterEmailDialogComponent implements OnInit {
 
   ngOnDestroy() {
     this.authStatusSub.unsubscribe();
+    this.authPasswordResetStatusSub.unsubscribe();
   }
 
   onChangeCategory(category: string) {
@@ -63,13 +77,16 @@ export class EnterEmailDialogComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
+    this.isLoading = true;
+
     console.log({
       emitted: "enterEmailDialogComponent.onLogin",
       data: this.form.value,
     });
 
-    this.form.patchValue({ email: "sorry still in testing!" });
-
-    // this.matDialog.close({ data: this.form.value });
+    if (this.form.value.category === "member") {
+      this.authService.requestMemberPasswordReset(this.form.value.email);
+    }
   }
 }
