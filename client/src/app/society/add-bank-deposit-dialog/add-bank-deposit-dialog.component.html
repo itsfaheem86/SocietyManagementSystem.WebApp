@@ -1,12 +1,12 @@
 <form>
   <h1>Create or edit bank deposit</h1>
-  <p>Edit fees.</p>
+  <p>Edit deposit.</p>
   <mat-form-field appearance="outline">
     <input
       #ngRefinementFee="ngModel"
       matInput
       required
-      name="extra_fee"
+      name="deposit_amount"
       type="number"
       [(ngModel)]="deposit_amount"
       pattern="[0-9]{1,5}"

@@ -1,0 +1,66 @@
+<form>
+  <h1>Create or edit other income</h1>
+  <p>Edit income.</p>
+  <mat-form-field appearance="outline">
+    <input
+      #ngExtraFee="ngModel"
+      matInput
+      required
+      name="other_income"
+      type="number"
+      [(ngModel)]="other_income"
+      pattern="[0-9]{1,5}"
+    />
+  </mat-form-field>
+  <div>
+    <p *ngIf="!ngExtraFee.valid || ngExtraFee.value < 20" class="warn">
+      Invalid amount!
+    </p>
+  </div>
+  <p>Edit descripton.</p>
+  <mat-form-field appearance="outline">
+    <textarea
+      #ngDescription="ngModel"
+      name="description"
+      matInput
+      required
+      type="text"
+      [(ngModel)]="description"
+    ></textarea>
+  </mat-form-field>
+  <div>
+    <p
+      *ngIf="
+        ngDescription.value
+          ? ngDescription.value.length > 100 || ngDescription.value.length < 5
+          : true
+      "
+      class="warn"
+    >
+      Invalid description!
+    </p>
+  </div>
+
+  <div mat-dialog-actions>
+    <button
+      [disabled]="
+        !ngExtraFee.valid ||
+        !ngDescription.valid ||
+        ngExtraFee.value < 20 ||
+        ngDescription.value.length > 100 ||
+        ngDescription.value.length < 5
+      "
+      mat-stroked-button
+      color="primary"
+      [mat-dialog-close]="{
+        other_income: other_income,
+        description: description
+      }"
+    >
+      Done
+    </button>
+    <button mat-stroked-button color="warn" [mat-dialog-close]="false">
+      Cancel
+    </button>
+  </div>
+</form>
